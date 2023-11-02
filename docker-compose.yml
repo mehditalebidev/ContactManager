@@ -1,0 +1,27 @@
+﻿version: '3.8'
+
+services:
+  webapi:
+    build:
+      context: ./ContactManager.WebApi
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=contactmanager;User Id=postgres;Password=YourPassword;
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: contactmanager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: YourPassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
